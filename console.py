@@ -76,6 +76,32 @@ class HBNBCommand(cmd.Cmd):
                 del all_objects[objKey]
                 storage.save()
 
+    def do_all(self, arg):
+        """
+        This method prints all string representation of all 
+        instances based or not on the class name 
+        e.g all or all BaseModel
+        """
+        all_objects = storage.all()
+
+        listStore = arg.split()
+        listLen = len(listStore)
+        resList = [ ]
+
+        if listLen == 0:
+            for obj in all_objects.values():
+                resList.append(str(obj))
+            print(resList)
+        else:
+            if listStore[0] in self.__class_Ind.keys():
+                for key, value in all_objects.items():
+                    if key.startswith(listStore[0]):
+                        resList.append(str(value))
+                print(resList)
+            else:
+                print("** class doesn't exist **")
+
+
 # ============= NON COMMAND FUNCTIONS ===========
 
     def emptyline(self):
