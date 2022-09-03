@@ -4,6 +4,8 @@
 
 from datetime import datetime
 import uuid
+import models
+
 
 class BaseModel:
     """the base class"""
@@ -20,10 +22,13 @@ class BaseModel:
                     self.__dict__[i] = datetime.strptime(j, formatt)
                 else:
                     self.__dict__[i] = j
+        else:
+            models.storage.new(self)
 
     def save(self):
         """updates the updated_at"""
         self.updated_at = datetime.today()
+        models.storage.save()
 
     def to_dict(self):
         """returns a dictionary representation"""

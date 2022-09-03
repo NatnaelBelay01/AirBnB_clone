@@ -15,7 +15,7 @@ class FileStorage:
 
     def new(self, obj):
         """sets the __objects"""
-        nam = obj.__class.__name__
+        nam = obj.__class__.__name__
         FileStorage.__objects["{}.{}".format(nam, obj.id)] = obj
 
     def save(self):
@@ -27,7 +27,7 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path, "w") as fp:
                 json.dump(ob_dic, fp)
-        except FilFileStorageeNotFoundError:
+        except FileNotFoundError:
             return
 
     def reload(self):
