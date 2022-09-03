@@ -34,10 +34,10 @@ class FileStorage:
         """deserializes a json file"""
         try:
             with open(FileStorage.__file_path) as fp:
-                 data = json.load(fp)
-                 for i in data.values():
-                     nam = i["__class__"]
-                     del i["__class__"]
-                     self.new(eval(nam)(**i))
+                data = json.load(fp)
+                for i in data.values():
+                    nam = i["__class__"]
+                    del i["__class__"]
+                    self.new(eval(nam)(**i))
         except FileNotFoundError:
             return
