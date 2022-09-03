@@ -10,7 +10,7 @@ class HBNBCommand(cmd.Cmd):
 
 # ========== Class Variables  =======================
     
-    class_Ind = {
+    __class_Ind = {
             'BaseModel' : BaseModel
             }
 # ============ COMMAND FUNCTIONS =================
@@ -25,18 +25,48 @@ class HBNBCommand(cmd.Cmd):
         Quit loop at the end of a file
         """
     def do_create(self, arg):
-        if arg == '':
-            print("**class name missing**")
-        
-        elif arg not in self.class_Ind.keys():
-            print("class dosen't exist")
+        """
+        This creates an instance of an inputed class
+        """
+        val = self.__arg_ver(arg)
+        if val is None:
+            pass
         else:
-            newInstance = self.class_Ind.get(arg)()
+            newInstance = self.__class_Ind.get(arg)()
             #newInstance.save()
             print(newInstance.id)
+
+
 # ============= NON COMMAND FUNCTIONS ===========
     def emptyline(self):
         pass
+
+    def __arg_ver(self, value):
+
+        listStore = value.split()
+        listLen = len(listStore)
+
+        if listLen == 0:
+            print("**class name missing**")
+            return None
+        elif listStore[0] not in self.__class_Ind.keys():
+            print("class dosen't exist")
+            return None
+        else:
+            return value
+
+
+# ========== Under Construction ===========================
+
+    def __id_ver(self, value):
+        
+        listStore = value.split()
+        listLen = len(listStore)
+
+        if listLen < 2:
+            print ("** instance id missing **")
+
+# ========================================================
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
