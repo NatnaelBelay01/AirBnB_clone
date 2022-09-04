@@ -1,9 +1,14 @@
 #!/usr/bin/python3
 
-import json
 import cmd
+from models.amenity import Amenity
 from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
 from models import storage
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -13,7 +18,13 @@ class HBNBCommand(cmd.Cmd):
 # ========== Class Variables  =======================
     __file_path = "file.json"
     __class_Ind = {
-            "BaseModel": BaseModel
+            "Amenity": Amenity,
+            "BaseModel": BaseModel,
+            "City": City,
+            "Place": Place,
+            "Review": Review,
+            "State": State,
+            "User": User
             }
 
 # ============ COMMAND FUNCTIONS =================
@@ -102,6 +113,64 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
 
 
+    def do_update(self, arg):
+        """
+        This  Updates an instance based on the class name 
+        and id by adding or updating attribute 
+        (save the change into the JSON file)
+        """
+        int_values = [
+            'number_rooms',
+            'number_bathrooms',
+            'max_guest',
+            'price_by_night'
+        ]
+
+        float_values = [
+            'latitude',
+            'longitude'
+        ]
+
+        val = self.__arg_ver( arg)
+        all_objects = storage.all()
+        if val is not None:
+
+            objId = self.__id_ver(arg, all_objects)
+
+            if objId is not None:
+                
+                listStore = arg.split()
+                listLen = len(listStore)
+                
+                if listLen > 2:
+                    
+                    if listLen > 3:
+
+                        if listStore[0] == "Place":
+                            if listStore[2] in int_values:
+                                try:
+                                    listStore[3] = int(listStore[3])
+
+                                except Exception:
+                                    listStore[3] = 0
+
+                            elif listStore[2] in float_values:
+                                try:
+                                    listStore[3] = float(listStore[3])
+                                except Exception:
+                                    listStore[3] = 0
+
+                            obKey = listStore[0] + '.' + listStore[1]
+                            setattr(all_objects[obKey], listStore[2], listStore[3])
+                        else:
+                            objKey = listStore[0] + '.' + listStore[1]
+                            setattr(all_objects[objKey], listStore[2], listStore[3])
+                            storage.save()
+                    else:
+                        print("** value missing **")
+                else:
+                    print("** attribute name missing **")
+
 # ============= NON COMMAND FUNCTIONS ===========
 
     def emptyline(self):
@@ -116,7 +185,6 @@ class HBNBCommand(cmd.Cmd):
         """
         This verifies the class name inserted
         """
-
         listStore = value.split()
         listLen = len(listStore)
 
