@@ -89,15 +89,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """
-        This method prints all string representation of all 
-        instances based or not on the class name 
+        This method prints all string representation of all
+        instances based or not on the class name
         e.g all or all BaseModel
         """
         all_objects = storage.all()
 
         listStore = arg.split()
         listLen = len(listStore)
-        resList = [ ]
+        resList = []
 
         if listLen == 0:
             for obj in all_objects.values():
@@ -112,11 +112,10 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
-
     def do_update(self, arg):
         """
-        This  Updates an instance based on the class name 
-        and id by adding or updating attribute 
+        This  Updates an instance based on the class name
+        and id by adding or updating attribute
         (save the change into the JSON file)
         """
         int_values = [
@@ -131,19 +130,19 @@ class HBNBCommand(cmd.Cmd):
             'longitude'
         ]
 
-        val = self.__arg_ver( arg)
+        val = self.__arg_ver(arg)
         all_objects = storage.all()
         if val is not None:
 
             objId = self.__id_ver(arg, all_objects)
 
             if objId is not None:
-                
+
                 listStore = arg.split()
                 listLen = len(listStore)
-                
+
                 if listLen > 2:
-                    
+
                     if listLen > 3:
 
                         if listStore[0] == "Place":
@@ -161,10 +160,14 @@ class HBNBCommand(cmd.Cmd):
                                     listStore[3] = 0
 
                             obKey = listStore[0] + '.' + listStore[1]
-                            setattr(all_objects[obKey], listStore[2], listStore[3])
+                            setattr(all_objects[obKey],
+                                    listStore[2],
+                                    listStore[3])
                         else:
                             objKey = listStore[0] + '.' + listStore[1]
-                            setattr(all_objects[objKey], listStore[2], listStore[3])
+                            setattr(all_objects[objKey],
+                                    listStore[2],
+                                    listStore[3])
                             storage.save()
                     else:
                         print("** value missing **")
